@@ -28,6 +28,8 @@ api_key_path = "./api_key"
 base_url = "http://api.openweathermap.org/data/2.5"
 current_url = "%s/weather?" % base_url
 forecast_url = "%s/forecast?" % base_url
+uv_url = "%s/uvi?" %base_url
+uvforecast_url = "%s/uvi/forecast?" %base_url
 
 # TODO(self) - find the darn flags library that we put in opensource and USE IT
 # TODO(self) - implement the ability to look up by zip code or just supply
@@ -101,6 +103,23 @@ def CurrentTemp(current):
   print "The current temperature is: %s degrees" % (str(current['main']['temp']))
   print "The current humidity is: %s%%" % (str(current['main']['humidity']))
   print "The current weather is: %s" % (current['weather'][0]['main'])
+
+
+def TodaysUV(url, query):
+  """ Get the forecast for the UV index at noon, recommend sunscreen.
+
+  Requires:
+    url: where to query for the UV index
+    query: location to query at, what's the api_key
+  """
+
+  uv_today = GetWeatherData(url, query)
+  if uv_today['value'] > 3:
+    sunscreen = "ouch! Wear sunscreen today!"
+  else:
+    sunscreen = "phew! No sunscreen required."
+  print "The UV index has a forecast high of %s; %s" % (str(uv_today['value']),
+                                                        sunscreen)
 
 def ForecastBrief(forecast):
   """ Print a brief forecast of the next 5 days: highs, lows & sky conditions
@@ -190,6 +209,7 @@ def main():
   if sys.argv[3] == "current":
     current = GetWeatherData(current_url, query)
     CurrentTemp(current)
+    TodaysUV(uv_url, query)
   elif sys.argv[3] == "brief":
     forecast = GetWeatherData(forecast_url, query)
     ForecastBrief(forecast)
