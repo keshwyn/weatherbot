@@ -12,7 +12,6 @@ Requires:
 
 Sources:
   http://geocoder.readthedocs.io
-  http://github.com/ZeevG/python-forecast.io
 
 According to openweathermap.org:
   api.openweathermap.org/data/2.5/weather?lat=35&lon=139
